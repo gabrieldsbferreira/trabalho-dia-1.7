@@ -1,5 +1,3 @@
-Vou montar o esqueleto do app Lista de Tarefas em Kotlin + Room com as 3 tabelas. É o mais tranquilo pra entregar até 01/06.
-
 Estrutura do projeto:
 
 1. Dependências - build.gradle módulo app
