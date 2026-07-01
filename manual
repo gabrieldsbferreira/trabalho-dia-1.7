@@ -1,0 +1,134 @@
+Vou montar o esqueleto do app Lista de Tarefas em Kotlin + Room com as 3 tabelas. É o mais tranquilo pra entregar até 01/06.
+
+Estrutura do projeto:
+
+1. Dependências - build.gradle módulo app
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+}
+
+android {
+    namespace 'com.vaelari.tarefas'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.vaelari.tarefas"
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+    }
+    
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+}
+
+dependencies {
+    implementation 'androidx.core:core-…
+[07:23, 7/1/2026] Dhyan: Perfeito! Vou te entregar o resto pra ficar pronto pro GitHub. 
+
+5. MainActivity.kt com RecyclerView básico
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import androidx.room.Room
+import kotlinx.coroutines.launch
+
+class MainActivity : AppCompatActivity() {
+    
+    private lateinit var db: AppDatabase
+    
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        
+        // Inicia o banco
+        db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "tarefas-db"
+        ).build()
+        
+        // Teste: insere dados iniciais
+        lifecycleScope.launch {
+            val dao = db.tarefaDao()
+            
+            val usuario = Usuario(nome = "Aluno 1", email = "aluno1@email.com")
+            dao.inserirUsuario(usuario)
+            
+            val categoria = Categoria(nome = "Estudos", cor = "#2196F3")
+            dao.inserirCategoria(categoria)
+            
+            val tarefa = Tarefa(
+                titulo = "Entregar trabalho de Kotlin",
+                descricao = "Prazo 01/06",
+                usuarioId = 1,
+                categoriaId = 1
+            )
+            dao.inserirTarefa(tarefa)
+        }
+    }
+}
+activity_main.xml simples:
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lista de Tarefas - Vaelari"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerTarefas"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp" />
+
+</LinearLayout>
+6. README.md pro GitHub
+Lista de Tarefas - Trabalho Kotlin 01/06
+
+Aplicação Android em Kotlin com banco de dados local usando Room.
+
+Grupo
+- Aluno 1
+- Aluno 2  
+- Aluno 3
+- Aluno 4
+
+Requisitos Atendidos
+- *Linguagem*: Kotlin
+- *Banco Local*: Room/SQLite com 3 tabelas relacionadas
+- *Tabelas*: usuarios, categorias, tarefas
+- *Entrega*: GitHub
+
+Estrutura do Banco
+1. *usuarios*: id, nome, email
+2. *categorias*: id, nome, cor  
+3. *tarefas*: id, titulo, descricao, concluida, usuarioId, categoriaId
+
+Relacionamentos: Tarefa pertence a 1 Usuario e 1 Categoria.
+
+Como Rodar
+1. Clone o repositório
+2. Abra no Android Studio Giraffe ou superior
+3. Sincronize o Gradle
+4. Rode no emulador ou dispositivo com API 24+
+
+Tech Stack
+- Kotlin
+- Room 2.6.1
+- ViewModel + LiveData
+- Coroutines
